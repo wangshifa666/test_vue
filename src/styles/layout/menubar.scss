@@ -1,0 +1,72 @@
+#app {
+
+  .main-container {
+    min-height: 100%;
+    transition: margin-left 0s;
+    margin-left: $sideBarWidth;
+    position: relative;
+    padding-left: 0px;
+    .menubar_collapse   {
+      color:#000000 !important;
+      background-color: #FFFFFF !important;
+      .el-button{
+        border: 0px;
+        width: 20px;
+        color: #000000 !important;
+        background-color: #FFFFFF !important;
+      }
+      :hover{
+          background-color: #F4F4F5 !important;
+      }
+    }
+  }
+  .sidebar-container {
+    width: $sideBarWidth;
+    height: 100%;
+    position: fixed;
+    font-size: 0px;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    overflow: hidden;
+    color:$menuText !important;
+    background-color: $menuBg !important;
+    .scrollbar-wrapper * {
+      color: inherit;
+      background-color: inherit !important;
+    }
+    .el-submenu__title,.el-menu-item  {
+      &:hover {
+        // you can use $subMenuHover
+        background-color: $menuHover !important;
+      }
+    }
+    // reset element-ui css
+    .horizontal-collapse-transition {
+      transition: 0s width ease-in-out, 0s padding-left ease-in-out, 0s padding-right ease-in-out;
+    }
+  }
+
+  .collapse{
+    .sidebar-container {
+      width: $sideBarCollapseWidth !important;
+      span,.el-icon-arrow-down{
+        visibility: hidden;
+      }
+    }
+    .main-container{
+      margin-left: $sideBarCollapseWidth;
+    }
+  }
+    .scrollbar-wrapper {
+      overflow-x: hidden !important;
+      height: 100%;
+    }
+
+}
+
+.el-menu--vertical {
+  color:$menuText !important;
+  background-color: $menuBg !important;
+  margin-left: 1px;
+}
