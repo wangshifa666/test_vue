@@ -1,9 +1,11 @@
 <template>
-  <el-scrollbar wrap-class="scrollbar-wrapper">
-    <el-menu :collapse="isCollapse">
+  <el-aside >
+    <el-scrollbar class="scrollbar aside-scrollbar">
+    <el-menu  :collapse="isCollapse" :default-active="$route.path">
       <menubar-item v-for="child in routes" :item="child" />
     </el-menu>
-  </el-scrollbar>
+    </el-scrollbar>
+  </el-aside>
 </template>
 
 <script>
@@ -18,7 +20,7 @@
     },
     computed: {
       ...mapGetters({
-        isCollapse: 'menubar/menubarCollapse'
+        isCollapse: 'user/menubarCollapse'
       }),
       routes() {
         //this.resetMenuBar();
@@ -29,11 +31,6 @@
           }
         }
       }
-    },
-    methods: {
-      ...mapActions({
-        resetMenuBar: "menubar/resetMenuBar"
-      })
     }
   }
 </script>

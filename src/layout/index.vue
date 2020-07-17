@@ -1,19 +1,18 @@
 <template>
-  <div :class="{collapse:isCollapse==true}" class="app-wrapper" >
-    <menubar class="sidebar-container" v-if="isAlive" ></menubar>
-    <div class="main-container">
-      <div>
-        <navbar />
-      </div>
+  <el-container  >
+    <navbar />
+    <el-container :class="{collapse:isCollapse==true,open:!isCollapse}" >
+      <menubar v-if="isAlive" ></menubar>
       <app-main />
-    </div>
-  </div>
+    </el-container>
+  </el-container>
 </template>
 
 <script>
 
 import {Menubar,Navbar,AppMain} from './components'
 import { mapGetters } from 'vuex'
+import { resetRouter } from '@/router'
 
 export default {
   name: 'Layout',
@@ -29,14 +28,15 @@ export default {
   },
   computed:{
     ...mapGetters({
-      isCollapse: 'menubar/menubarCollapse'
+      isCollapse: 'user/menubarCollapse'
     })
   },
   method: {
-  //   reload(){
-  //     this.isAlive = false;
-  //     this.$nextTick(() => (this.isAlive = true))
-  //   }
+    reload(){
+      console.debug("layout refresh")
+      console.debug(this.$store.state.user.menubars)
+      resetRouter(this.$store.state.user.menubars)
+    }
   },
   watch: {
     // '$store.state.menubar.menubars':function () {

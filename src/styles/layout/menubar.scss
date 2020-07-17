@@ -6,19 +6,6 @@
     margin-left: $sideBarWidth;
     position: relative;
     padding-left: 0px;
-    .menubar_collapse   {
-      color:#000000 !important;
-      background-color: #FFFFFF !important;
-      .el-button{
-        border: 0px;
-        width: 20px;
-        color: #000000 !important;
-        background-color: #FFFFFF !important;
-      }
-      :hover{
-          background-color: #F4F4F5 !important;
-      }
-    }
   }
   .sidebar-container {
     width: $sideBarWidth;
@@ -31,6 +18,22 @@
     overflow: hidden;
     color:$menuText !important;
     background-color: $menuBg !important;
+    .menubar_collapse   {
+      width: 100%;
+      .el-button{
+        float: right;
+        border: 0px;
+        width: $sideBarCollapseWidth;
+        margin-right:17px;
+      }
+      :hover{
+          background-color: $menuHover !important;
+      }
+    }
+    .scrollbar-wrapper {
+      overflow: hidden !important;
+      height: 100%;
+    }
     .scrollbar-wrapper * {
       color: inherit;
       background-color: inherit !important;
@@ -58,10 +61,7 @@
       margin-left: $sideBarCollapseWidth;
     }
   }
-    .scrollbar-wrapper {
-      overflow-x: hidden !important;
-      height: 100%;
-    }
+
 
 }
 

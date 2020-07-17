@@ -1,39 +1,51 @@
 <template>
-  <section class="app-main">
-      <router-view :key="key" />
-  </section>
+  <el-main class="app-main">
+    <el-button-group class="menubar_collapse">
+      <el-button  type="primary" icon="el-icon-s-unfold" v-if="isCollapse" @click="hideMenuBar"></el-button>
+      <el-button  type="primary" icon="el-icon-s-fold" v-if="!isCollapse" @click="openMenuBar"></el-button>
+    </el-button-group>
+    <el-tabs v-model="tabIndex" type="card" closable @tab-click="tabClick" @tab-remove="tabRemove">
+      <el-tab-pane v-for="(tab,index) in tabs" :key="tab.name" :label="tab.title" :name="tab.name" />
+      </el-tab-pane>
+    </el-tabs>
+    <router-view />
+  </el-main>
 </template>
 
 <script>
-export default {
-  name: 'AppMain',
-  computed: {
-    key() {
-      console.log("route.path:"+this.$route.path)
-      return this.$route.path
+  import {
+    mapGetters,
+    mapActions
+  } from 'vuex'
+  export default {
+    name: 'AppMain',
+    computed: {
+      ...mapGetters({
+        isCollapse: 'user/menubarCollapse'
+      }),
+      tabs() {
+       return this.$store.state.user.tabs.list;
+      },
+      tabIndex:{
+        get(){
+          return this.$route.path;
+        },
+        set(val){
+        }
+      }
+    },
+    methods: {
+      ...mapActions({
+        openMenuBar: "user/openMenuBar",
+        hideMenuBar: "user/hideMenuBar",
+        resetMenuBar: "user/resetMenuBar",
+        tabRemove: "user/removeTab"
+
+      }),
+      	// tab切换时，动态的切换路由
+      tabClick (tab) {
+        this.$router.replace({path: tab.name});
+      },
     }
   }
-}
 </script>
-
-<style scoped>
-.app-main {
-  /*50 = navbar  */
-  min-height: calc(100vh - 50px);
-  width: 100%;
-  position: relative;
-  overflow: hidden;
-}
-.fixed-header+.app-main {
-  padding-top: 50px;
-}
-</style>
-
-<style lang="scss">
-// fix css style bug in open el-dialog
-.el-popup-parent--hidden {
-  .fixed-header {
-    padding-right: 15px;
-  }
-}
-</style>

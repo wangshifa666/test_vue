@@ -8,42 +8,18 @@
       fit
       highlight-current-row
     >
-      <el-table-column align="center" label="ID" width="95">
+     <el-table-column v-for="(value,key,index) in header" :label="value">
         <template slot-scope="scope">
-          {{ scope.$index }}
+          {{ scope.row[key] }}
         </template>
-      </el-table-column>
-      <el-table-column label="Title">
-        <template slot-scope="scope">
-          {{ scope.row.title }}
-        </template>
-      </el-table-column>
-      <el-table-column label="Author" width="110" align="center">
-        <template slot-scope="scope">
-          <span>{{ scope.row.author }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="Pageviews" width="110" align="center">
-        <template slot-scope="scope">
-          {{ scope.row.pageviews }}
-        </template>
-      </el-table-column>
-      <el-table-column class-name="status-col" label="Status" width="110" align="center">
-        <template slot-scope="scope">
-          <el-tag :type="scope.row.status | statusFilter">{{ scope.row.status }}</el-tag>
-        </template>
-      </el-table-column>
-      <el-table-column align="center" prop="created_at" label="Display_time" width="200">
-        <template slot-scope="scope">
-          <i class="el-icon-time" />
-          <span>{{ scope.row.display_time }}</span>
-        </template>
-      </el-table-column>
+     </el-table-column>
+
     </el-table>
   </div>
 </template>
 
 <script>
+  import { getTables } from '@/api/table'
 
 export default {
   filters: {
@@ -59,6 +35,14 @@ export default {
   data() {
     return {
       list: null,
+      header: {
+        id: 'ID',
+        title: '标题',
+        'status': '状态',
+        author: '作者',
+        pageviews: '其他',
+        display_time: '发布日期'
+      },
       listLoading: true
     }
   },
@@ -68,7 +52,7 @@ export default {
   methods: {
     fetchData() {
       this.listLoading = true
-      getList().then(response => {
+      getTables().then(response => {
         this.list = response.data.items
         this.listLoading = false
       })

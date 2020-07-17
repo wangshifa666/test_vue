@@ -11,8 +11,9 @@ import '@/styles/index.scss' // global css
 import App from './App'
 import store from './store'
 import router from './router'
+import { resetRouter } from '@/router'
 import '@/icons' // icon
-//import '@/permission' // permission control
+import '@/permission' // permission control
 
 // set ElementUI lang to EN
 Vue.use(ElementUI, { locale })
@@ -24,5 +25,13 @@ new Vue({
   el: '#app',
   router,
   store,
-  render: h => h(App)
+  render: function(h) {
+    var a = h(App);
+    if(!router.fixed && store.getters.token){
+      var lastPath = this.$route.path;
+      resetRouter(store.state.user.menubars);
+      this.$router.push({path: lastPath})
+    }
+   return a;
+  }
 })

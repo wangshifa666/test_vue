@@ -11,40 +11,37 @@ const whiteList = ['/login'] // no redirect whitelist
 router.beforeEach(async(to, from, next) => {
   // start progress bar
   NProgress.start()
-
   // set page title
   document.title = 'test'
-
   // determine whether the user has logged in
   const hasToken = store.getters.token
-
+  console.debug("permission token")
+  console.debug(hasToken)
   if (hasToken) {
-    if (to.path === '/login') {
+    if (['/','/login'].indexOf(to.path)>=0) {
       // if is logged in, redirect to the home page
-      next({ path: '/' })
+      next({ path: '/main' })
       NProgress.done()
     } else {
-      const accessRoutes = await store.getters.menubars
-      // dynamically add accessible routes
-      router.addRoutes(accessRoutes)
-      // hack method to ensure that addRoutes is complete
-      // set the replace: true, so the navigation will not leave a history record
-      next({ ...to, replace: true })
+      next()
     }
   } else {
     /* has no token*/
     if (whiteList.indexOf(to.path) !== -1) {
-      // in the free login whitelist, go directly
       next()
-    } else {
-      // other pages that do not have permission to access are redirected to the login page.
-      next(`/login?redirect=${to.path}`)
+    }else{
+      next({ path: '/login' })
       NProgress.done()
     }
   }
 })
 
-router.afterEach(() => {
+router.afterEach((to,from) => {
   // finish progress bar
+  console.debug("router aftereach")
+  console.debug(to)
+  if("menu"===to.meta.tag){
+    store.dispatch('user/addTab',{name: to.path,title: to.name})
+  }
   NProgress.done()
 })

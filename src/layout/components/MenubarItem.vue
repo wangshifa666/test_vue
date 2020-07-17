@@ -1,17 +1,19 @@
 <template>
-  <router-link :to="resolvePath(item)" v-if="childrenLength(item)=='menu'">
-    <el-menu-item  :index="resolvePath(item)">
-      <i :class="item.iconName"></i>
-      <span slot="title">{{item.name}}</span>
-    </el-menu-item>
-  </router-link>
-  <el-submenu v-else-if="childrenLength(item)=='submenu'":index="resolvePath(item)">
-    <template slot="title">
-      <i :class="item.iconName"></i>
-      <span slot="title">{{item.name}}</span>
-    </template>
-    <menubar-item v-for="child in item.children" :key="child.path" :item="child"/>
-  </el-submenu>
+  <div>
+    <router-link :to="resolvePath(item)" v-if="childrenLength(item)=='menu'">
+      <el-menu-item  :index="resolvePath(item)">
+        <i :class="item.iconName"></i>
+        <span slot="title">{{item.name}}</span>
+      </el-menu-item>
+    </router-link>
+    <el-submenu v-else-if="childrenLength(item)=='submenu'" :index="resolvePath(item)" append-to-body:true >
+      <template slot="title">
+        <i :class="item.iconName"></i>
+        <span slot="title">{{item.name}}</span>
+      </template>
+      <menubar-item v-for="child in item.children" :key="child.path" :item="child"/>
+    </el-submenu>
+  </div>
 </template>
 
 <script>
@@ -39,11 +41,11 @@ export default {
       }
     },
     resolvePath(item) {
-      console.log("item.path1:"+item.path)
+      //console.debug("item.path1:"+item.path)
       if (isExternal(item.path)) {
         return item.path
       }
-      console.log("item.path2:"+path.resolve(item.path))
+      //console.debug("item.path2:"+path.resolve(item.path))
       return path.resolve(item.path)
     }
   }

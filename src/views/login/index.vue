@@ -39,7 +39,7 @@
 
 <script>
   import { validUsername } from '@/utils/validate'
-
+  import { login } from '@/api/user'
   export default {
     name: 'Login',
     data() {
@@ -101,13 +101,16 @@
       handleLogin() {
         this.$refs.loginForm.validate(valid => {
           if (valid) {
-            console.log('this.redirect22------' + this.$store.state.menubar.menubars)
-            var userInfo = {username: "admin", token: "1232131"}
-            this.$store.dispatch("user/login",userInfo);
-            this.$router.push({
-              path: '/dashboard'
+            var lastUpdateTime = this.$store.state.user.lastUpdateTime;
+            var userInfo = {username: this.loginForm.username, password: this.loginForm.password,lastUpdateTime: lastUpdateTime}
+            login(userInfo).then(response=>{
+              const {data} = response;
+              this.$store.dispatch("user/login",data);
+              this.$router.push({
+                path: '/main'
+              })
+              this.loading = false
             })
-            this.loading = false
           } else {
             console.log('error submit!!')
             return false

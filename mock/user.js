@@ -1,55 +1,133 @@
+const routers = [{
+      path: '/login',
+      name: 'login',
+      iconName: 'el-icon-location',
+      tag: 'login',
+      component: 'login/index',
+    },
+    {
+      path: '/main',
+      name: 'layout',
+      iconName: 'el-icon-location',
+      tag: 'layout',
+      component: 'layout',
+      redirect: '/dashboard',
+      children: [{
+          path: '/dashboard',
+          name: 'Dashboard',
+          iconName: 'el-icon-location',
+          tag: 'menu',
+          component: 'dashboard/index',
+        },
+        {
+          path: '/form',
+          name: 'form',
+          tag: 'menu',
+          component: 'form/index',
+          iconName: 'el-icon-location',
+        },
+        {
+          path: '/example',
+          name: 'example',
+          iconName: 'el-icon-location',
+          tag: 'menu',
+          component: 'index',
+          redirect: '/example/table',
+          children: [{
+              path: '/example/table',
+              name: 'Table',
+              component: 'table/index',
+              tag: 'menu',
+              iconName: 'el-icon-location'
 
-const tokens = {
+            },
+            {
+              path: '/example/tree',
+              name: 'Tree',
+              component: 'tree/index',
+              tag: 'menu',
+              iconName: 'el-icon-location'
+            }
+          ]
+        },
+        {
+          path: '/sys',
+          name: '权限管理',
+          iconName: 'el-icon-key',
+          tag: 'menu',
+          component: 'sys/index',
+          redirect: '/sys/role',
+          children: [{
+              path: '/sys/role',
+              name: '角色',
+              component: 'sys/role/index',
+              tag: 'menu',
+              iconName: 'el-icon-key'
+
+            },
+            {
+              path: '/sys/menu',
+              name: '菜单',
+              component: 'sys/menu/index',
+              tag: 'menu',
+              iconName: 'el-icon-menu'
+            },
+            {
+              path: '/sys/user',
+              name: '用户',
+              component: 'sys/user/index',
+              tag: 'menu',
+              iconName: 'el-icon-user'
+            }
+          ]
+        }
+      ]
+    }
+  ]
+
+
+const users = {
   admin: {
-    token: 'admin-token'
+    username: 'admin',
+    password: 111111,
+    token: 'admin-token-001',
+    lastLoginTime: 1,
+    lastUpdateTime: 1,
+    menubars: routers
   },
   editor: {
     token: 'editor-token'
   }
 }
 
-const users = {
-  'admin-token': {
-    roles: ['admin'],
-    introduction: 'I am a super administrator',
-    avatar: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
-    name: 'Super Admin'
-  },
-  'editor-token': {
-    roles: ['editor'],
-    introduction: 'I am an editor',
-    avatar: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
-    name: 'Normal Editor'
-  }
-}
 
 export default [
   // user login
   {
-    url: '/vue-admin-template/user/login',
+    url: '/test_vue/user/login',
     type: 'post',
     response: config => {
-      const { username } = config.body
-      const token = tokens[username]
-
+      const { username,password,lastUpdateTime } = config.body
+      const user = users[username]
+      console.log("token-----" + user.token)
       // mock error
-      if (!token) {
+      if (user.password!=password) {
         return {
           code: 60204,
-          message: 'Account and password are incorrect.'
+          message: 'Account and password are incorrect.'+user.password
         }
       }
 
       return {
         code: 20000,
-        data: token
+        data: user
       }
     }
   },
 
   // get user info
   {
-    url: '/vue-admin-template/user/info\.*',
+    url: '/test_vue/user/info\.*',
     type: 'get',
     response: config => {
       const { token } = config.query
@@ -70,15 +148,41 @@ export default [
     }
   },
 
-  // user logout
   {
-    url: '/vue-admin-template/user/logout',
+    url: '/test_vue/user/logout',
     type: 'post',
-    response: _ => {
+    response: config => {
       return {
         code: 20000,
         data: 'success'
       }
     }
-  }
+  },
+
+  {
+    url: '/test_vue/user/chgpwd',
+    type: 'post',
+    response: config => {
+      const { username,password,newpassword,token } = config.body
+      const user = users[username]
+      // mock error
+      if(user==null){
+        return {
+          code: 60204,
+          message: 'Account are incorrect.'+username
+        }
+      }else if (user.password!=password) {
+        return {
+          code: 60204,
+          message: 'password are incorrect.'
+        }
+      }else{
+        user.password = newpassword
+        return {
+          code: 20000,
+          data: user
+        }
+      }
+    }
+  },
 ]
