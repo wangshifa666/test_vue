@@ -18,12 +18,10 @@
 </template>
 
 <script>
-  import {
-    mapGetters,
-    mapActions
-  } from 'vuex'
   import { logout } from '@/api/user'
   import ChgPwd from './ChgPwd'
+  import { mapActions } from 'vuex'
+
   export default {
     name: 'Navbar',
     data(){
@@ -33,12 +31,16 @@
       ChgPwd
     },
     methods: {
+      ...mapActions({
+        _logout: "user/logout",
+      }),
+
       handleLogout(){
         console.debug('logout')
         var userInfo = {username: '', token: ''}
         logout(userInfo).then(response=>{
           const {data} = response;
-          this.$store.dispatch("user/logout");
+          this._logout();
           this.$router.push({
             path: '/login'
           })

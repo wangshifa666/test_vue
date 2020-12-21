@@ -7,11 +7,13 @@ const state = {
   token: '',
   lastLoginTime: 0,
   lastUpdateTime: 0,
-  menubars: [], //菜单项
-  menubarCollapse: false ,// 菜单展开状态：否
   tabs: {//tab页显示，菜单点击历史记录
     maxLen: 10,//最大支持tab页数量，超过关闭第一项
     list: [],
+  },
+  menubars:{
+    list:[],
+    isCollapse:false,
   }
 }
 const mutations = {
@@ -21,24 +23,24 @@ const mutations = {
     state.lastLoginTime = userInfo.lastLoginTime;
     state.lastUpdateTime = userInfo.lastUpdateTime;
     if(userInfo.menubars){
-      state.menubars = userInfo.menubars;
+      state.menubars.list = userInfo.menubars;
     }
-    resetRouter(state.menubars);
+    resetRouter(state.menubars.list);
   },
   LOGOUT:(state)=> {
     state.token = '';
     state.username = '';
     state.lastLoginTime = 0;
     state.lastUpdateTime = 0;
-    state.menubars = [];
+    state.menubars.list = {};
     state.tabs.list = [];
 
   },
   HIDE_MENUBAR: (state) => {
-    state.menubarCollapse = false;
+    state.menubars.isCollapse = false;
   },
   OPEN_MENUBAR: state => {
-    state.menubarCollapse = true;
+    state.menubars.isCollapse = true;
   },
   ADD_TAB: (state, menubar)=> {
     var isContain = false;
@@ -97,14 +99,9 @@ const actions = {
   },
   removeTab({ commit }, tabName){
     commit('REMOVE_TAB', tabName)
-
-
   }
 }
 const getters = {
-  menubarCollapse: state => state.menubarCollapse,
-  username: state => state.username,
-  token: state => state.token
 }
 
 export default {

@@ -21,7 +21,7 @@ const routers = [{
         },
         {
           path: '/form',
-          name: 'form',
+          name: 'Form',
           tag: 'menu',
           component: 'form/index',
           iconName: 'el-icon-location',

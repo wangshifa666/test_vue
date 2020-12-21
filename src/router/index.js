@@ -4,7 +4,6 @@ import Router from 'vue-router'
 Vue.use(Router)
 /* Layout */
 import Layout from '@/layout'
-import store from '@/store'
 const constantRoutes = [
     {
       path: '/login',

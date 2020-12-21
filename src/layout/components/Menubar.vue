@@ -11,7 +11,7 @@
 <script>
   import MenubarItem from './MenubarItem'
   import {
-    mapGetters,mapActions
+    mapGetters
   } from 'vuex'
   export default {
     name: 'Menubar',
@@ -20,7 +20,7 @@
     },
     computed: {
       ...mapGetters({
-        isCollapse: 'user/menubarCollapse'
+        isCollapse: 'menubarCollapse'
       }),
       routes() {
         //this.resetMenuBar();

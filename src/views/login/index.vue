@@ -40,8 +40,18 @@
 <script>
   import { validUsername } from '@/utils/validate'
   import { login } from '@/api/user'
+  import {
+    mapGetters,
+    mapActions
+  } from 'vuex'
+
   export default {
     name: 'Login',
+    computed: {
+      ...mapGetters({
+        _lastUpdateTime: 'lastUpdateTime',
+      }),
+    },
     data() {
       const validateUsername = (rule, value, callback) => {
         if (!validUsername(value)) {
@@ -88,6 +98,9 @@
       }
     },
     methods: {
+      ...mapActions({
+        _login: "user/login",
+      }),
       showPwd() {
         if (this.passwordType === 'password') {
           this.passwordType = ''
@@ -101,11 +114,11 @@
       handleLogin() {
         this.$refs.loginForm.validate(valid => {
           if (valid) {
-            var lastUpdateTime = this.$store.state.user.lastUpdateTime;
+            var lastUpdateTime = this._lastUpdateTime;
             var userInfo = {username: this.loginForm.username, password: this.loginForm.password,lastUpdateTime: lastUpdateTime}
             login(userInfo).then(response=>{
               const {data} = response;
-              this.$store.dispatch("user/login",data);
+              this._login(data);
               this.$router.push({
                 path: '/main'
               })
@@ -117,24 +130,6 @@
           }
         })
       },
-      handleLogin2() {
-        this.$refs.loginForm.validate(valid => {
-          if (valid) {
-            this.loading = true
-            this.$store.dispatch('user/login', this.loginForm).then(() => {
-              this.$router.push({
-                path: this.redirect || '/'
-              })
-              this.loading = false
-            }).catch(() => {
-              this.loading = false
-            })
-          } else {
-            console.log('error submit!!')
-            return false
-          }
-        })
-      }
     }
   }
 </script>

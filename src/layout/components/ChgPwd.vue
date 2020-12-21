@@ -1,5 +1,5 @@
 <template>
-  <el-dialog title="修改密码" :visible.sync="dialogVisible" width="30%">
+  <el-dialog title="修改密码" :visible.sync="dialogVisible" :modal-append-to-body="false" width="30%">
     <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="chg-pwd">
       <el-form-item label="原密码" prop="oldPass">
         <el-input type="password" v-model="ruleForm.oldPass" autocomplete="off"></el-input>
@@ -56,8 +56,8 @@
     },
     computed: {
       ...mapGetters({
-        username: 'user/username',
-        token: 'user/token'
+        username: 'username',
+        token: 'token'
       }),
     },
     methods: {

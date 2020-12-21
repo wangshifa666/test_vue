@@ -9,8 +9,8 @@ import locale from 'element-ui/lib/locale/lang/en' // lang i18n
 import '@/styles/index.scss' // global css
 
 import App from './App'
-import store from './store'
-import router from './router'
+import store from '@/store'
+import router from '@/router'
 import { resetRouter } from '@/router'
 import '@/icons' // icon
 import '@/permission' // permission control
@@ -29,7 +29,7 @@ new Vue({
     var a = h(App);
     if(!router.fixed && store.getters.token){
       var lastPath = this.$route.path;
-      resetRouter(store.state.user.menubars);
+      resetRouter(store.getters.menubars);
       this.$router.push({path: lastPath})
     }
    return a;

@@ -1,7 +1,7 @@
 <template>
   <el-container  >
     <navbar />
-    <el-container :class="{collapse:isCollapse==true,open:!isCollapse}" >
+    <el-container class="s-main" :class="{collapse:isCollapse==true,open:!isCollapse}" >
       <menubar v-if="isAlive" ></menubar>
       <app-main />
     </el-container>
@@ -12,7 +12,6 @@
 
 import {Menubar,Navbar,AppMain} from './components'
 import { mapGetters } from 'vuex'
-import { resetRouter } from '@/router'
 
 export default {
   name: 'Layout',
@@ -28,22 +27,16 @@ export default {
   },
   computed:{
     ...mapGetters({
-      isCollapse: 'user/menubarCollapse'
+      isCollapse: 'menubarCollapse'
     })
   },
   method: {
     reload(){
       console.debug("layout refresh")
-      console.debug(this.$store.state.user.menubars)
-      resetRouter(this.$store.state.user.menubars)
+      //重置menubars???
     }
   },
   watch: {
-    // '$store.state.menubar.menubars':function () {
-    //     console.debug("menubar reload....");
-    //     this.isAlive = false;
-    //     this.$nextTick(() => (this.isAlive = true))
-    // }
   }
 }
 </script>

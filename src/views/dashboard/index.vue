@@ -7,13 +7,7 @@
 </template>
 
 <script>
-// console.debug(this.$store.state.user.menubars.length)
-// if(this.$store.state.user.menubars.length>0){
-//   this.$router.resetRouter(this.$store.state.user.menubars)
-//   this.$router.push({
-//     path: '/layout'
-//   })
-// }
+
 export default {
   name: 'Dashboard'
 }
